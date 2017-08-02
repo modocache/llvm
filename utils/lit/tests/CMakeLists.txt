@@ -18,6 +18,12 @@ endforeach()
 add_lit_testsuite(check-lit "Running lit's tests"
   ${CMAKE_CURRENT_BINARY_DIR}
   DEPENDS "FileCheck" "not"
+  # Visual Studio allows the build configuration to be set at *build* time,
+  # and it does not make use of CMAKE_BUILD_TYPE. As a result, the location
+  # of the FileCheck/not executables, which lit's test suite depends upon,
+  # is not known until build time. To inform lit's test suite of where to
+  # find these executables, pass --build_configuration as a --param.
+  PARAMS build_configuration=$<CONFIG>
 )
 
 # For IDEs
