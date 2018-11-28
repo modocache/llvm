@@ -363,11 +363,11 @@ struct PaddingCalculator {
 
 // Build a struct that will keep state for an active coroutine.
 //   struct f.frame {
-//     ResumeFnTy ResumeFnAddr;
+//     ResumeFnTy ResumeFnAddr; // What is sizeof(ResumeFnTy)?
 //     ResumeFnTy DestroyFnAddr;
-//     int ResumeIndex;
-//     ... promise (if present) ...
-//     ... spills ...
+//     int ResumeIndex; // <- sizeof(int) will work here.
+//     ... promise (if present) ... // <- sizeof(decltype(__promise)) in Clang will give us this
+//     ... spills ... // <- We already assume every variable spills.
 //   };
 static StructType *buildFrameType(Function &F, coro::Shape &Shape,
                                   SpillInfo &Spills) {
